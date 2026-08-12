@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CLIENT_REVIEWS, COMPANY_INFO } from "@/data/contentData";
 import { Star, ExternalLink, MessageSquare, CheckCircle2 } from "lucide-react";
+import { ClientReviewDialog } from "@/components/ClientReviewDialog";
 
 interface ReviewsPageProps {
   onRequestQuote: () => void;
@@ -25,11 +26,11 @@ export default function ReviewsPage({ onRequestQuote }: ReviewsPageProps) {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Button className="font-semibold text-sm gap-2" asChild>
-              <a href={COMPANY_INFO.googleFormUrl} target="_blank" rel="noopener noreferrer">
-                Share Your Experience (Google Form) <ExternalLink className="w-4 h-4" />
-              </a>
-            </Button>
+            <ClientReviewDialog
+              triggerLabel="Submit A Client Review"
+              triggerVariant="default"
+              triggerClassName="font-semibold text-sm"
+            />
             <Button variant="outline" className="font-semibold text-sm gap-2" onClick={onRequestQuote}>
               Start Your Project
             </Button>
@@ -47,7 +48,10 @@ export default function ReviewsPage({ onRequestQuote }: ReviewsPageProps) {
                   <div className="flex items-center justify-between">
                     <div className="flex gap-1 text-amber-500">
                       {[...Array(5)].map((_, j) => (
-                        <Star key={j} className="w-5 h-5 fill-current" />
+                        <Star
+                          key={j}
+                          className={`w-5 h-5 ${j < Math.round(rev.rating) ? "fill-current" : "opacity-30"}`}
+                        />
                       ))}
                     </div>
                     <span className="text-xs font-medium text-muted-foreground">{rev.date}</span>
@@ -77,11 +81,12 @@ export default function ReviewsPage({ onRequestQuote }: ReviewsPageProps) {
             <p className="text-xs text-muted-foreground">
               Your honest feedback helps us improve our project development and website support services.
             </p>
-            <Button variant="outline" className="font-semibold text-xs gap-2" asChild>
-              <a href={COMPANY_INFO.googleFormUrl} target="_blank" rel="noopener noreferrer">
-                Submit A Client Review <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </Button>
+            <ClientReviewDialog
+              triggerLabel="Submit A Client Review"
+              triggerVariant="outline"
+              triggerSize="sm"
+              triggerClassName="font-semibold text-xs"
+            />
           </div>
         </div>
       </section>

@@ -9,12 +9,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { COMPANY_INFO, FAQ_LIST } from "@/data/contentData";
-import { MessageSquare, Phone, Mail, Send, CheckCircle2, MapPin, ExternalLink, Globe } from "lucide-react";
+import { Phone, Mail, Send, CheckCircle2, MapPin, ExternalLink, Globe } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export default function ContactPage() {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -34,7 +36,7 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.fullName || !formData.phone) {
@@ -46,35 +48,34 @@ export default function ContactPage() {
       return;
     }
 
-    const messageText = `*NEW CONTACT PAGE ENQUIRY - TECHINDIA SOLUTIONS*
-----------------------------------------
-*Name:* ${formData.fullName}
-*Phone/WhatsApp:* ${formData.phone}
-*Email:* ${formData.email || "N/A"}
-*School/Shop/Org:* ${formData.organization || "N/A"}
-*User Type:* ${formData.userType}
-*Service Required:* ${formData.serviceRequired}
-*Project/Site Name:* ${formData.projectName || "N/A"}
-*Existing Link:* ${formData.existingLink || "N/A"}
-*Preferred Contact:* ${formData.preferredContact}
-*Requirement Description:*
-${formData.description || "N/A"}
+    setIsSubmitting(true);
 
-*Additional Note:*
-${formData.additionalMessage || "N/A"}`;
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    const encodedMessage = encodeURIComponent(messageText);
-    const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodedMessage}`;
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result.error || "Unable to send your requirement");
+      }
 
-    setSubmitted(true);
-    toast({
-      title: "Requirement Submitted!",
-      description: "Opening WhatsApp to send your requirement directly to our team...",
-    });
-
-    setTimeout(() => {
-      window.open(whatsappUrl, "_blank");
-    }, 800);
+      setSubmitted(true);
+      toast({
+        title: "Requirement Sent Successfully!",
+        description: "Your requirement has been sent to our team by email.",
+      });
+    } catch (error) {
+      toast({
+        title: "Submission Failed",
+        description: error instanceof Error ? error.message : "Please try again or contact us on WhatsApp.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -110,7 +111,7 @@ ${formData.additionalMessage || "N/A"}`;
               <Card className="p-6 rounded-2xl border-emerald-500/30 bg-emerald-500/5 space-y-4">
                 <div className="flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 fill-current" />
+                    <WhatsAppIcon className="w-5 h-5 fill-current" />
                   </div>
                   <div>
                     <h3 className="font-display font-bold text-base">WhatsApp Quick Contact</h3>
@@ -124,7 +125,7 @@ ${formData.additionalMessage || "N/A"}`;
 
                 <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs gap-2" asChild>
                   <a href={COMPANY_INFO.socialLinks.whatsapp} target="_blank" rel="noopener noreferrer">
-                    <MessageSquare className="w-4 h-4 fill-current" /> Chat on WhatsApp ({COMPANY_INFO.phone})
+                    <WhatsAppIcon className="w-4 h-4 fill-current" /> Chat on WhatsApp ({COMPANY_INFO.phone})
                   </a>
                 </Button>
               </Card>
@@ -388,8 +389,8 @@ ${formData.additionalMessage || "N/A"}`;
                       />
                     </div>
 
-                    <Button type="submit" size="lg" className="w-full font-semibold text-sm gap-2 pt-2">
-                      <Send className="w-4 h-4" /> Submit & Send via WhatsApp
+                    <Button type="submit" size="lg" className="w-full font-semibold text-sm gap-2 pt-2" disabled={isSubmitting}>
+                      <Send className="w-4 h-4" /> {isSubmitting ? "Sending..." : "Submit & Send via Email"}
                     </Button>
                   </form>
                 )}

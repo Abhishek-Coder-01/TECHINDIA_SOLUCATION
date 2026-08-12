@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +9,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ProjectModal } from "@/components/ProjectModal";
 import { CertificateModal } from "@/components/CertificateModal";
-import { ProjectItem, CertificateItem, COMPANY_INFO } from "@/data/contentData";
+import { ProjectItem, CertificateItem } from "@/data/contentData";
 
 import Landing from "./pages/Landing";
 import AboutPage from "./pages/AboutPage";
@@ -34,9 +34,10 @@ function ScrollToTop() {
 const AppContent = () => {
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
   const [activeCertificate, setActiveCertificate] = useState<CertificateItem | null>(null);
+  const navigate = useNavigate();
 
   const handleOpenEnquiry = (_serviceName?: string) => {
-    window.open(COMPANY_INFO.googleFormUrl, "_blank", "noopener,noreferrer");
+    navigate("/contact");
   };
 
   return (

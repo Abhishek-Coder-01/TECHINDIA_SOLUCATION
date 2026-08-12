@@ -47,6 +47,7 @@ import {
   ProjectItem,
   CertificateItem,
 } from "@/data/contentData";
+import { ClientReviewDialog } from "@/components/ClientReviewDialog";
 
 import projectSmartCampus from "@/assets/project-smart-campus.png";
 import projectShopBilling from "@/assets/project-shop-billing.png";
@@ -185,6 +186,7 @@ interface LandingProps {
 export default function Landing({ onRequestQuote, onSelectProject, onSelectCertificate }: LandingProps) {
   const [wordIndex, setWordIndex] = useState(0);
   const navigate = useNavigate();
+  const featuredReviews = CLIENT_REVIEWS.slice(0, 4);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -285,7 +287,7 @@ export default function Landing({ onRequestQuote, onSelectProject, onSelectCerti
                 <ShieldCheck className="w-4 h-4" /> Genuine Founder-Led Technology Team
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-[44px] xl:text-[52px] font-display tracking-tight leading-[1.15] text-foreground mb-6 font-bold">
+              <h1 className="text-[46px] sm:text-5xl lg:text-[44px] xl:text-[52px] font-display tracking-tight leading-[1.15] text-foreground mb-6 font-bold">
                 Building Digital Solutions for{" "}
                 <span className="inline-block relative min-w-[7ch]">
                   <AnimatePresence mode="wait">
@@ -307,19 +309,19 @@ export default function Landing({ onRequestQuote, onSelectProject, onSelectCerti
                 {COMPANY_INFO.subtext}
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+              <div className="flex flex-row items-center justify-center gap-3.5 w-full">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto text-base font-semibold px-8 h-12 gap-2 shadow-md"
+                  className="w-1/2 sm:w-[220px] lg:w-auto text-sm sm:text-base font-semibold px-4 sm:px-8 h-12 gap-2 shadow-md"
                   onClick={() => onRequestQuote()}
                 >
-                  Start Your Project <ArrowRight className="w-4 h-4" />
+                  Start Your Project <ArrowRight className="w-4 h-4 shrink-0" />
                 </Button>
 
                 <Button
                   size="lg"
                   variant="outline"
-                  className="w-full sm:w-auto text-base font-semibold px-8 h-12 gap-2"
+                  className="w-1/2 sm:w-[220px] lg:w-auto text-sm sm:text-base font-semibold px-4 sm:px-8 h-12 gap-2"
                   onClick={() => navigate("/services")}
                 >
                   Explore Services
@@ -457,7 +459,7 @@ export default function Landing({ onRequestQuote, onSelectProject, onSelectCerti
                       </div>
                       <h3 className="font-display font-bold text-lg text-foreground mb-2">{srv.title}</h3>
                       <p className="text-xs text-muted-foreground leading-relaxed mb-4">{srv.shortDesc}</p>
-                      
+
                       <div className="flex flex-wrap gap-1.5 mb-4">
                         {srv.technologies.slice(0, 3).map((t) => (
                           <span key={t} className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
@@ -806,7 +808,7 @@ export default function Landing({ onRequestQuote, onSelectProject, onSelectCerti
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {CLIENT_REVIEWS.map((rev, i) => (
+            {featuredReviews.map((rev, i) => (
               <motion.div
                 key={rev.id}
                 initial={{ opacity: 0, y: 16 }}
@@ -819,7 +821,10 @@ export default function Landing({ onRequestQuote, onSelectProject, onSelectCerti
                     <div className="flex items-center justify-between">
                       <div className="flex gap-1 text-amber-500">
                         {[...Array(5)].map((_, j) => (
-                          <Star key={j} className="w-4 h-4 fill-current" />
+                          <Star
+                            key={j}
+                            className={`w-4 h-4 ${j < Math.round(rev.rating) ? "fill-current" : "opacity-30"}`}
+                          />
                         ))}
                       </div>
                       <span className="text-[11px] text-muted-foreground font-medium">{rev.date}</span>
@@ -845,15 +850,12 @@ export default function Landing({ onRequestQuote, onSelectProject, onSelectCerti
           </div>
 
           <div className="text-center mt-10">
-            <Button
-              variant="outline"
-              className="font-semibold text-xs gap-2"
-              asChild
-            >
-              <a href={COMPANY_INFO.googleFormUrl} target="_blank" rel="noopener noreferrer">
-                Share Your Experience (Google Form) <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </Button>
+            <ClientReviewDialog
+              triggerLabel="Submit A Client Review"
+              triggerVariant="outline"
+              triggerSize="sm"
+              triggerClassName="font-semibold text-xs"
+            />
           </div>
         </div>
       </section>

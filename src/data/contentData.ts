@@ -59,7 +59,7 @@ export interface CertificateItem {
 export interface ReviewItem {
   id: string;
   clientName: string;
-  clientType: "College Student" | "Shop Owner" | "Small Business" | "Individual";
+  clientType: "College Student" | "Shop Owner" | "Small Business" | "Individual" | "Freelancer" | "Startup Founder" | "Business Owner" | "Local Business Owner";
   serviceUsed: string;
   rating: number;
   reviewText: string;
@@ -508,7 +508,98 @@ export const CLIENT_REVIEWS: ReviewItem[] = [
     reviewText: "The AI disease detection model developed by TechIndia achieved great accuracy. The team explained the entire Python code so well that I scored top grade!",
     date: "Nov 2025",
   },
-];
+
+  {
+    id: "rev-5",
+    clientName: "Vikash Singh",
+    clientType: "College Student",
+    serviceUsed: "Java Full Stack Project",
+    rating: 5.0,
+    reviewText: "I was struggling with my Java project and needed help understanding the backend. The team explained everything clearly and helped me make my project much more professional.",
+    date: "Mar 2026",
+  },
+  {
+    id: "rev-6",
+    clientName: "Neha Joshi",
+    clientType: "Freelancer",
+    serviceUsed: "Portfolio Website",
+    rating: 5.0,
+    reviewText: "My new portfolio website looks modern and professional. The design is responsive, loads quickly, and perfectly represents my work. Really happy with the final result!",
+    date: "Mar 2026",
+  },
+  {
+    id: "rev-7",
+    clientName: "Rohit Verma",
+    clientType: "Small Business",
+    serviceUsed: "E-Commerce Website",
+    rating: 5.0,
+    reviewText: "TECHINDIA SOLUTIONS built an easy-to-manage online store for my business. Product management and order handling are now much easier for me.",
+    date: "Apr 2026",
+  },
+  {
+    id: "rev-8",
+    clientName: "Kavita Deshmukh",
+    clientType: "College Student",
+    serviceUsed: "Python Project Development",
+    rating: 5.0,
+    reviewText: "The Python project was completed with clean code and proper documentation. I also received excellent guidance for explaining the project during my presentation.",
+    date: "Apr 2026",
+  },
+  {
+    id: "rev-9",
+    clientName: "Arjun Mehta",
+    clientType: "Startup Founder",
+    serviceUsed: "Business Website",
+    rating: 5.0,
+    reviewText: "They understood our startup requirements quickly and delivered a clean business website. Communication was smooth and the website works perfectly on mobile devices.",
+    date: "May 2026",
+  },
+  {
+    id: "rev-10",
+    clientName: "Pooja Yadav",
+    clientType: "College Student",
+    serviceUsed: "React.js Project",
+    rating: 5.0,
+    reviewText: "I needed help with my React project and the team made the difficult concepts very easy to understand. The final project looked professional and worked without any major issues.",
+    date: "May 2026",
+  },
+  {
+    id: "rev-11",
+    clientName: "Saurabh Gupta",
+    clientType: "Business Owner",
+    serviceUsed: "Website Redesign",
+    rating: 5.0,
+    reviewText: "Our old website looked outdated and was difficult to use. TECHINDIA SOLUTIONS redesigned it with a fresh interface and made the entire website responsive.",
+    date: "Jun 2026",
+  },
+  {
+    id: "rev-12",
+    clientName: "Anjali Rao",
+    clientType: "College Student",
+    serviceUsed: "Final Year Android App",
+    rating: 5.0,
+    reviewText: "The Android application project was exactly what I needed for my final year submission. The team provided excellent technical guidance and helped me understand every feature.",
+    date: "Jun 2026",
+  },
+  {
+    id: "rev-13",
+    clientName: "Manish Tiwari",
+    clientType: "Local Business Owner",
+    serviceUsed: "Inventory Management System",
+    rating: 5.0,
+    reviewText: "The inventory system has made it much easier to track our products and stock levels. Everything is simple to use and the team was very supportive throughout the project.",
+    date: "Jul 2026",
+  },
+  {
+    id: "rev-14",
+    clientName: "Simran Kaur",
+    clientType: "College Student",
+    serviceUsed: "Data Science Project",
+    rating: 5.0,
+    reviewText: "I received great support with my data science project. The team explained the dataset, Python implementation, and results in a way that was easy for me to present confidently.",
+    date: "Jul 2026",
+  },
+]; 
 
 export const WHY_CHOOSE_US = [
   {

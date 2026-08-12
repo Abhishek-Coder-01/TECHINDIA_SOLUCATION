@@ -78,11 +78,10 @@ export function Navbar({ onRequestQuote }: NavbarProps) {
                 <button
                   key={link.label}
                   onClick={() => handleNavClick(link.path)}
-                  className={`text-xs font-semibold px-3 py-2 rounded-lg transition-colors ${
-                    isActive
+                  className={`text-xs font-semibold px-3 py-2 rounded-lg transition-colors ${isActive
                       ? "text-primary bg-primary/10"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </button>
@@ -102,11 +101,10 @@ export function Navbar({ onRequestQuote }: NavbarProps) {
                 <WhatsAppIcon className="w-3.5 h-3.5" /> WhatsApp Us
               </a>
             </Button>
-
             <Button
               size="sm"
               className="text-xs font-semibold gap-1.5 shadow-sm"
-              onClick={onRequestQuote}
+              onClick={() => navigate("/contact")}
             >
               Request a Project <ArrowRight className="w-3.5 h-3.5" />
             </Button>
@@ -139,11 +137,10 @@ export function Navbar({ onRequestQuote }: NavbarProps) {
                   <button
                     key={link.label}
                     onClick={() => handleNavClick(link.path)}
-                    className={`text-left text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors ${
-                      isActive
+                    className={`text-left text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors ${isActive
                         ? "text-primary bg-primary/10"
                         : "text-foreground hover:bg-muted"
-                    }`}
+                      }`}
                   >
                     {link.label}
                   </button>
@@ -155,7 +152,7 @@ export function Navbar({ onRequestQuote }: NavbarProps) {
                   className="w-full justify-center font-semibold text-sm gap-2"
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    onRequestQuote();
+                    navigate("/contact");
                   }}
                 >
                   Request a Project <ArrowRight className="w-4 h-4" />
