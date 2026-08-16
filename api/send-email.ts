@@ -57,6 +57,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       // for the email address associated with the Resend account.
       from: process.env.RESEND_FROM_EMAIL?.trim() || "onboarding@resend.dev",
       to: ["techindiasolution7@gmail.com"],
+      ...(typeof email === "string" && email.includes("@") ? { replyTo: email } : {}),
       subject: `New Project Requirement - ${fullName}`,
       html: `
         <h2>New Project Requirement</h2>
