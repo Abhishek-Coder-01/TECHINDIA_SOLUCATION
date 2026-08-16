@@ -52,10 +52,17 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       return res.status(400).json({ error: "Full name and phone are required" });
     }
 
+    const configuredFrom = process.env.RESEND_FROM_EMAIL?.trim();
+    // A Resend account email is not automatically a verified sending domain.
+    // Never use a Gmail address as `from`; use it as replyTo instead.
+    const from = configuredFrom && !/@gmail\.com\s*>?$/i.test(configuredFrom)
+      ? configuredFrom
+      : "onboarding@resend.dev";
+
     const { data, error } = await resend.emails.send({
-      // Use a verified domain in production. The Resend test sender only works
-      // for the email address associated with the Resend account.
-      from: process.env.RESEND_FROM_EMAIL?.trim() || "onboarding@resend.dev",
+      // The test sender works when the recipient is the Resend account email.
+      // For production, set RESEND_FROM_EMAIL to a verified custom domain.
+      from,
       to: ["techindiasolution7@gmail.com"],
       ...(typeof email === "string" && email.includes("@") ? { replyTo: email } : {}),
       subject: `New Project Requirement - ${fullName}`,
